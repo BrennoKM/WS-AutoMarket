@@ -1,0 +1,1 @@
+pyinstaller --onefile --noconsole --name=Warspear-AutoMarket --icon=imgs/icones/icon_ws_mkt.ico ws_interface.py

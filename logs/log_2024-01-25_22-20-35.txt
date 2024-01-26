@@ -1,0 +1,17 @@
+
+Arquivo:<'ws_interface.py'> Classe:<'WS'> Função/Método:<'ad_atalhos'> Linha:<'402'>
+Mensagem:<'Os Atalhos foram ativados'>
+Arquivo:<'acoes.py'> Classe:<'None'> Função/Método:<'encontrar_alvo'> Linha:<'35'>
+Mensagem:<'Alvo não encontrado: imgs/itens/stam.png'>
+Arquivo:<'acoes.py'> Classe:<'None'> Função/Método:<'encontrar_alvo'> Linha:<'35'>
+Mensagem:<'Alvo não encontrado: imgs/itens/stam.png'>
+Arquivo:<'acoes.py'> Classe:<'None'> Função/Método:<'encontrar_alvo'> Linha:<'35'>
+Mensagem:<'Alvo não encontrado: imgs/itens/stam.png'>
+Arquivo:<'acoes.py'> Classe:<'None'> Função/Método:<'encontrar_alvo'> Linha:<'35'>
+Mensagem:<'Alvo não encontrado: imgs/ancoras/ancora_cancelar.png'>
+Arquivo:<'acoes.py'> Classe:<'None'> Função/Método:<'encontrar_alvo'> Linha:<'35'>
+Mensagem:<'Alvo não encontrado: imgs/ancoras/ancora_avancar.png'>
+Arquivo:<'acoes.py'> Classe:<'None'> Função/Método:<'encontrar_alvo'> Linha:<'35'>
+Mensagem:<'Alvo não encontrado: imgs/ancoras/ancora_ok.png'>
+Arquivo:<'acoes.py'> Classe:<'None'> Função/Método:<'encontrar_alvo'> Linha:<'35'>
+Mensagem:<'Alvo não encontrado: imgs/ancoras/ancora_vender.png'>

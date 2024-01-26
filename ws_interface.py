@@ -243,6 +243,7 @@ class WS:
             for dado in dados:
                 if dado["Nome"] == item_selecionado:
                     img = es.load_image(dado["Arquivo"], 50, 50)
+                    # img = es.load_image(f'{constantes.PATH_IMGS_ITENS}{dado["Arquivo"]}', 50, 50)
                     self.lbl_img.config(image=img)
 
     def on_press_print(self, key):
@@ -359,7 +360,7 @@ class WS:
                 if key == keyboard.Key.esc:
                     self.rootws.deiconify()
                     myEvent.set()
-                    # listener_running.clear()
+                    listener_running.clear()
                     
                     # return False
                 if key.char == 'k':

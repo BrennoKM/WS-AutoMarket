@@ -1,0 +1,5 @@
+
+Arquivo:<'ws_interface.py'> Classe:<'WS'> Função/Método:<'ad_atalhos'> Linha:<'402'>
+Mensagem:<'Os Atalhos foram ativados'>
+Arquivo:<'entrada_saida.py'> Classe:<'None'> Função/Método:<'load_image'> Linha:<'47'>
+Mensagem:<'Arquivo 'WWsign.png' não encontrado.'>

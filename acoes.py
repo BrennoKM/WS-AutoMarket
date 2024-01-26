@@ -40,11 +40,10 @@ def encontrar_alvo(path, semelhanca=0.8, regiao= None, center: bool = True, nece
     
 def ajustar_tela_market(myEvent):
     verif = mover_para(encontrar_alvo(f'{constantes.PATH_IMGS_ANCORAS}ancora_fechar.png', necessario=False))
-    if verif is None:
-        return None
+    if verif is not None:
+        clicar(1)
     if myEvent.is_set():
         return
-    clicar(1)
     verif = encontrar_alvo(f'{constantes.PATH_IMGS_ANCORAS}ancora_cancelar.png', necessario=False)
     if verif is not None:
         mover_para(verif)
@@ -185,6 +184,7 @@ def venderItens(myEvent, item, qnt, preco, licensa_mkt):
     if myEvent.is_set():
         return
     ajustar_tela_market(myEvent)
+
     ajustar_Barra_Lateral(myEvent)
     
     if myEvent.is_set():

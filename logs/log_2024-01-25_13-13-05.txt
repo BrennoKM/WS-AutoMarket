@@ -1,0 +1,3 @@
+
+Arquivo:<'..\..\..\..\AppData\Local\Temp\_MEI69842\ws_interface.py'> Classe:<'WS'> Função/Método:<'ad_atalhos'> Linha:<'402'>
+Mensagem:<'Os Atalhos foram ativados'>

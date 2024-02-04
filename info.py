@@ -1,6 +1,7 @@
 import inspect
 import os.path
 import entrada_saida as es
+from datetime import datetime
 
 log = ''
 
@@ -16,7 +17,8 @@ def printinfo(texto):
             nome_classe = pilha_de_chamadas[1].frame.f_locals['self'].__class__.__name__
         except KeyError:
             pass
-    msg = f"Arquivo:<'{nome_arquivo}'> Classe:<'{nome_classe}'> Função/Método:<'{nome_contexto}'> Linha:<'{linha_atual}'>\nMensagem:<'{texto}'>"
+    data_hora_atual = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    msg = f"Arquivo:<'{nome_arquivo}'> Classe:<'{nome_classe}'> Função/Método:<'{nome_contexto}'> Linha:<'{linha_atual}'>\n Mensagem:        <'{texto}'>\n  Hora: {data_hora_atual}"
     log = f'{log}\n{msg}'
     print(msg)
 

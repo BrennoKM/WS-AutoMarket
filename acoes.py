@@ -37,7 +37,22 @@ def encontrar_alvo(path, semelhanca=0.8, regiao= None, center: bool = True, nece
     else:
         info.printinfo(f'Arquivo não encontrado: {path}')
         return None
-    
+
+def encontrar_alvos(path, semelhanca=0.8, regiao = None, center: bool = True, necessario: bool = True):
+    if os.path.exists(path):
+        slot = pg.locateAllOnScreen(path, confidence=semelhanca, region=regiao)
+        if(slot != None):
+            # if(center == True):
+            #     slot = pg.center(slot)
+            return slot
+        else:
+            if necessario is True:
+                info.printinfo(f'Alvo não encontrado: {path}')
+            return None
+    else:
+        info.printinfo(f'Arquivo não encontrado: {path}')
+        return None
+
 def ajustar_tela_market(myEvent):
     verif = mover_para(encontrar_alvo(f'{constantes.PATH_IMGS_ANCORAS}ancora_fechar.png', necessario=False))
     if verif is not None:
@@ -178,7 +193,7 @@ def pegar_ouro_correio(myEvent):
     clicar(1)
 
 
-def venderItens(myEvent, item, qnt, preco, licensa_mkt):
+def vender_itens(myEvent, item, qnt, preco, licensa_mkt):
     verif = True
     #print(f"{myEvent}  interface VENDERITENS actions")
     if myEvent.is_set():
@@ -232,3 +247,16 @@ def venderItens(myEvent, item, qnt, preco, licensa_mkt):
     vender(myEvent)
     pg.sleep(0.5 + random.uniform(-0.05, 0.05))
     return True
+
+def contar_itens(myEvent, item):
+    posicao = item.find(".png")
+    item = item[:posicao] + "_mkt" + item[posicao:]
+    itens = encontrar_alvos(f'{constantes.PATH_IMGS_ITENS}{item}', semelhanca=0.98)
+    try:
+        itens = list(itens)
+    except (ValueError, Exception, AttributeError):
+        info.printinfo("Item_mkt.png não foi encontrado")
+    info.printinfo(f'{item,' -> ',len(itens)}')
+    # for it in itens:
+    #     print(it)
+    return len(itens)

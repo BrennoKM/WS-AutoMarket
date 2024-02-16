@@ -20,6 +20,8 @@ class WS:
         listener_running = threading.Event()
         global myEvent
         myEvent = threading.Event()
+        global presets
+        presets = None
         es.inicio()
 
         self.rootws = ThemedTk(theme='arc', themebg=True)
@@ -378,7 +380,16 @@ class WS:
                     self.coletar_ouro()
                     #kb.press('k')
                     pass
-
+                
+                if key.char == 'n':
+                    self.adicionar_preset()
+                    pass
+                if key.char == 'b':
+                    self.resetar_preset()
+                    pass
+                if key.char == 'v':
+                    acoes.contar_itens(myEvent, 'bau_prima.png')
+                    pass
                 if key.char is not None:
                     pass
                     #print(f'Letter pressed: {key.char}')
@@ -410,19 +421,8 @@ class WS:
     def salvar_estado(self):
         self.salvar_itens()
 
-    def runBot(self, myEvent, item, qnt, preco, repeticoes, licenca_mkt=False):
-        for i in range(repeticoes):
-            # print(f"{myEvent}  interface FORRUNBOT")
-            if myEvent.is_set():
-                # print("testandooooooooooo")
-                return
-            verif = True
-            verif = acoes.venderItens(myEvent, item, qnt, preco, licenca_mkt)
-            if verif is None:
-                return None
 
-    def run(self):
-        myEvent.clear()
+    def carregar_preset(self, rep: bool = True):
         preset = self.carregar()
         # print(f"{myEvent}  interface RUN")
         try:
@@ -440,8 +440,63 @@ class WS:
         except ValueError:
             self.abrir_messageBox("Aviso", "Valor númerico inválido na variável 'Repetições'.", 4000)
             return
+        if rep is True:
+            return (myEvent, preset['item'], preset['qnt'], preset['preco'], repeticoes, preset['licenca'])
+        else:
+            return (myEvent, preset['item'], preset['qnt'], preset['preco'], preset['licenca'])
+        
+    def adicionar_preset(self):
+        global presets
+        if presets is not None:
+            presets = presets + [self.carregar_preset(rep=False)]
+            info.printinfo(presets)
+        else:
+            presets = [self.carregar_preset(rep=False)]
+            info.printinfo(presets)
 
-        self.runBot(myEvent, preset['item'], preset['qnt'], preset['preco'], repeticoes, preset['licenca'])
+    def resetar_preset(self):
+        global presets
+        presets = [self.carregar_preset(rep=False)]
+        info.printinfo(presets)
+
+    def runBot(self, myEvent, item, qnt, preco, repeticoes, licenca_mkt=False):
+        global presets
+        if presets is not None and len(presets) > 1:
+            for i in range(repeticoes):
+                item_faltando = None
+                menor_qnt = 99
+                for p in presets:
+                    if myEvent.is_set():
+                        return
+                    p = list(p)
+                    # print(f'{p[1]}')
+                    qnt = acoes.contar_itens(myEvent, p[1])
+                    # print(qnt)
+                    p = tuple(p)
+                    
+                    if qnt < menor_qnt:
+                        menor_qnt = qnt
+                        item_faltando = p
+                self.rodar(myEvent, 1, item_faltando)
+        else:
+            preset = (myEvent, item, qnt, preco, licenca_mkt)
+            presets = [preset]
+            self.rodar(myEvent, repeticoes, presets[0])
+
+    def rodar(self, myEvent, repeticoes, preset):
+        for i in range(repeticoes):
+            # print(f"{myEvent}  interface FORRUNBOT")
+            if myEvent.is_set():
+                # print("testandooooooooooo")
+                return
+            verif = True
+            verif = acoes.vender_itens(*preset)
+            if verif is None:
+                return None
+
+    def run(self):
+        myEvent.clear()
+        self.runBot(*self.carregar_preset())
 
     def fechar_messageBox(self):
         pg.press('enter')

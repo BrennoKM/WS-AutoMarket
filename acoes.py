@@ -5,6 +5,7 @@ import info
 import os
 
 pg.useImageNotFoundException(False)
+pg.FAILSAFE = False
 
 def mover_para(alvo=None, var_x=0, var_y=0):
     if(alvo is not None):

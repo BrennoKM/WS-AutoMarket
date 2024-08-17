@@ -41,6 +41,9 @@ class WS:
         self.etr_horas.grid(row = 9, column = 0, padx=5, pady=5, sticky = "W")  
         self.etr_minutos = Entry(self.rootws, width = 5)
         self.etr_minutos.grid(row = 10, column = 0, padx=5, pady=5, sticky = "W")
+        self.etr_horas.insert(0, 48)
+        self.etr_minutos.insert(0, 5)
+
 
 
         

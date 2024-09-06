@@ -1,1 +1,30 @@
-{"AREA_ITENS": [1224, 217, 425, 611], "AREA_MERCADO": [1226, 887, 393, 97], "POSICAO_BARRA_GRANDE_LATERAL": [1640, 978], "POSICAO_QUANTIDADE": [1545, 580], "POSICAO_PRECO": [1603, 457], "POSICAO_LICENSA_MKT": [1239, 640]}
+{
+    "AREA_ITENS": [
+        1224,
+        217,
+        425,
+        611
+    ],
+    "AREA_MERCADO": [
+        1226,
+        887,
+        393,
+        97
+    ],
+    "POSICAO_BARRA_GRANDE_LATERAL": [
+        1640,
+        978
+    ],
+    "POSICAO_QUANTIDADE": [
+        1545,
+        580
+    ],
+    "POSICAO_PRECO": [
+        1603,
+        457
+    ],
+    "POSICAO_LICENSA_MKT": [
+        1239,
+        640
+    ]
+}

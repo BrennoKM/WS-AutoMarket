@@ -194,7 +194,7 @@ def pegar_ouro_correio(myEvent):
     clicar(1)
 
 
-def vender_itens(myEvent, item, qnt, preco, licensa_mkt):
+def vender_itens(myEvent, item, qnt, preco, licensa_mkt, preco_medio):
     verif = True
     #print(f"{myEvent}  interface VENDERITENS actions")
     if myEvent.is_set():
@@ -235,7 +235,10 @@ def vender_itens(myEvent, item, qnt, preco, licensa_mkt):
     if myEvent.is_set():
         return
 
-    inserir_preco(myEvent, preco)
+    if(preco_medio is False):
+        inserir_preco(myEvent, preco)
+    else:
+        pg.sleep(2)
     
     if myEvent.is_set():
         return

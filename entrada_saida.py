@@ -31,8 +31,9 @@ def inicio():
             carregar_constantes()
 
 def existe_diretorio(diretorio):
-    if os.path.exists(path=diretorio):
+    if os.path.exists(diretorio):
         return True
+    return False
 
 def criar_diretorio(diretorio):
     os.makedirs(diretorio)
@@ -58,7 +59,7 @@ def ler_itens():
         return []
 
 
-def alterarItem(nome, novo_nome=None, nova_quantidade=None, novo_preco=None, novo_arqNome=None, nova_licenca=None, novo_slots=None):
+def alterarItem(nome, novo_nome=None, nova_quantidade=None, novo_preco=None, novo_arqNome=None, nova_licenca=None, novo_slots=None, novo_precoMedio=None):
     for item in itens_dic:
         if item["Nome"] == nome:
             if novo_nome is not None:
@@ -73,16 +74,18 @@ def alterarItem(nome, novo_nome=None, nova_quantidade=None, novo_preco=None, nov
                 item["Licenca"] = nova_licenca
             if novo_slots is not None:
                 item["Slots"] = novo_slots
+            if novo_precoMedio is not None:
+                item["PrecoMedio"] = novo_precoMedio
             # print(item)
             return True
     return False
 
-def adicionarItem(nome, arqNome, qnt=None, preco=None, licenca=False, slots = 15):
+def adicionarItem(nome, arqNome, qnt=None, preco=None, licenca=False, slots = 15, precoMedio=None):
         verif = False
         if itens_dic:
             for item in itens_dic:
                 if item["Nome"] == nome:
-                    alterarItem(nome, nome, qnt, preco, arqNome, licenca, slots)
+                    alterarItem(nome, nome, qnt, preco, arqNome, licenca, slots, precoMedio)
                     verif = True
         if verif == False:
             item = {
@@ -91,7 +94,8 @@ def adicionarItem(nome, arqNome, qnt=None, preco=None, licenca=False, slots = 15
                 "Preco": preco,
                 "Arquivo": arqNome,
                 "Licenca": licenca,
-                "Slots": slots
+                "Slots": slots,
+                "PrecoMedio": precoMedio
             }
             itens_dic.append(item)
             return item

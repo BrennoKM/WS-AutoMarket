@@ -31,8 +31,10 @@ class WS:
         self.etr_quantidade.grid(row = 1, column = 1, padx = 5, pady = 5, sticky = "NSEW")
         self.etr_preco = Entry(self.rootws)
         self.etr_preco.grid(row = 2, column = 1, padx = 5, pady = 5, sticky = "NSEW")
-        self.cbn_licenca = Checkbutton(self.rootws, text = "Licença de mercado")
+        self.cbn_licenca = Checkbutton(self.rootws, text = "Licença")
         self.cbn_licenca.grid(row = 3, column = 1, padx = 5, pady = 5, sticky = "NSEW")
+        self.cbn_preco_medio = Checkbutton(self.rootws, text = "Preço médio")
+        self.cbn_preco_medio.grid(row = 3, column = 1, padx = 5, pady = 5, sticky = "NSE")
         
         self.etr_slots = Entry(self.rootws, width = 5)
         self.etr_slots.grid(row = 3, column = 0, padx=5, pady=5, sticky = "E")
@@ -297,11 +299,13 @@ class WS:
                     licenca = self.cbn_licenca.instate(['selected'])
                     slots = self.etr_slots.get()
                     arquivo = self.etr_config_item_nome_arquivo.get()
+                    precoMedio = self.cbn_preco_medio.instate(['selected'])
                     dado["Quantidade"] = qnt
                     dado["Preco"] = preco
                     dado["Licenca"] = licenca
                     dado["Slots"] = slots
                     dado["Arquivo"] = arquivo
+                    dado["PrecoMedio"] = precoMedio
                     es.alterarItem(
                         dado["Nome"],
                         novo_nome=dado["Nome"],
@@ -309,7 +313,8 @@ class WS:
                         novo_preco=preco,
                         novo_arqNome=arquivo,
                         nova_licenca=licenca,
-                        novo_slots = slots
+                        novo_slots = slots,
+                        novo_precoMedio = precoMedio
                     )
                     es.salvar_itens_novos(dados)
         
@@ -355,6 +360,14 @@ class WS:
                         else:
                             if self.cbn_licenca.instate(['selected']):
                                 self.cbn_licenca.invoke()
+
+                    if "PrecoMedio" in dado:
+                        if dado["PrecoMedio"]:
+                            if self.cbn_preco_medio.instate(['!selected']):
+                                self.cbn_preco_medio.invoke()
+                        else:
+                            if self.cbn_preco_medio.instate(['selected']):
+                                self.cbn_preco_medio.invoke()
                     self.cbx_itens.selection_clear()
         return dados   
     def on_release(self, key):
@@ -363,6 +376,7 @@ class WS:
         if listener_running.is_set():
             try:
                 if key == keyboard.Key.esc:
+                    print("escc")
                     self.rootws.deiconify()
                     myEvent.set()
                     listener_running.clear()
@@ -428,6 +442,7 @@ class WS:
     def carregar_preset(self, rep: bool = True):
         preset = self.carregar()
         # print(f"{myEvent}  interface RUN")
+        preco_medio = self.cbn_preco_medio.instate(['selected'])
         try:
             qnt = int(preset['qnt'])
         except ValueError:
@@ -444,9 +459,9 @@ class WS:
             self.abrir_messageBox("Aviso", "Valor númerico inválido na variável 'Repetições'.", 4000)
             return
         if rep is True:
-            return (myEvent, preset['item'], preset['qnt'], preset['preco'], repeticoes, preset['licenca'])
+            return (myEvent, preset['item'], preset['qnt'], preset['preco'], repeticoes, preset['licenca'], preco_medio)
         else:
-            return (myEvent, preset['item'], preset['qnt'], preset['preco'], preset['licenca'])
+            return (myEvent, preset['item'], preset['qnt'], preset['preco'], preset['licenca'], preco_medio)
         
     def adicionar_preset(self):
         global presets
@@ -462,7 +477,7 @@ class WS:
         presets = [self.carregar_preset(rep=False)]
         info.printinfo(presets)
 
-    def runBot(self, myEvent, item, qnt, preco, repeticoes, licenca_mkt=False):
+    def runBot(self, myEvent, item, qnt, preco, repeticoes, licenca_mkt=False, preco_medio=False):
         global presets
         if presets is not None and len(presets) > 1:
             for i in range(repeticoes):
@@ -482,7 +497,7 @@ class WS:
                         item_faltando = p
                 self.rodar(myEvent, 1, item_faltando)
         else:
-            preset = (myEvent, item, qnt, preco, licenca_mkt)
+            preset = (myEvent, item, qnt, preco, licenca_mkt, preco_medio)
             presets = [preset]
             self.rodar(myEvent, repeticoes, presets[0])
 

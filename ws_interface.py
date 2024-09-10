@@ -373,19 +373,24 @@ class WS:
     def on_release(self, key):
     # if not listener_running.is_set():
     #     return False  # Encerra o listener
-        if listener_running.is_set():
-            try:
+        try:
+            if key == keyboard.Key.alt_gr:
+                self.ad_atalhos()
+                # return False
+            
+            if listener_running.is_set():
+                
                 if key == keyboard.Key.esc:
-                    print("escc")
+                    info.printinfo("Bot encerrado, mostrando a interface")
                     self.rootws.deiconify()
                     myEvent.set()
                     listener_running.clear()
-                    
-                    # return False
                 if key.char == 'k':
+                    info.printinfo("Iniciando o bot")
                     self.iniciar()
                 if key.char == 'l':
                     #print(f"{myEvent}  interface L antes")
+                    info.printinfo("Pausando o bot")
                     myEvent.set()
                     #print(f"{myEvent}  interface L depois")
                     #group_thread.stop()
@@ -410,12 +415,13 @@ class WS:
                 if key.char is not None:
                     pass
                     #print(f'Letter pressed: {key.char}')
-                
-            except AttributeError:
+            
+            else:
+                pass  
+        except AttributeError:
                 pass
                 #print(f'Special key {key} pressed.')
-        else:
-            pass    
+          
     
     def listener(self):
         with keyboard.Listener(on_release=self.on_release) as listener:
@@ -424,10 +430,10 @@ class WS:
     def ad_atalhos(self):
         if listener_running.is_set():
             listener_running.clear()
-            info.printinfo("Os Atalhos foram desativados")
+            info.printinfo("Os Atalhos foram desativados (Alt Gr para ativar/deativar)", erro=True)
         else:
             listener_running.set()
-            info.printinfo("Os Atalhos foram ativados")
+            info.printinfo("Os Atalhos foram ativados (Alt Gr para ativar/deativar)")
         
     def abrir_configs(self):
         config_window = tk.Toplevel(self.rootws)

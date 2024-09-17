@@ -2,3 +2,4 @@
 /logs
 /__pycache__
 Warspear-AutoMarket.exe
+*.env

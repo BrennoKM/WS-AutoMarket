@@ -374,7 +374,7 @@ class WS:
     # if not listener_running.is_set():
     #     return False  # Encerra o listener
         try:
-            if key == keyboard.Key.alt_gr:
+            if key == keyboard.Key.ctrl_r:
                 self.ad_atalhos()
                 # return False
             
@@ -385,6 +385,7 @@ class WS:
                     self.rootws.deiconify()
                     myEvent.set()
                     listener_running.clear()
+                    info.printinfo("Os Atalhos foram desativados (Ctrl_r para ativar/deativar)", erro=True)
                 if key.char == 'k':
                     info.printinfo("Iniciando o bot")
                     self.iniciar()
@@ -430,10 +431,10 @@ class WS:
     def ad_atalhos(self):
         if listener_running.is_set():
             listener_running.clear()
-            info.printinfo("Os Atalhos foram desativados (Alt Gr para ativar/deativar)", erro=True)
+            info.printinfo("Os Atalhos foram desativados (Ctrl_r para ativar/deativar)", erro=True)
         else:
             listener_running.set()
-            info.printinfo("Os Atalhos foram ativados (Alt Gr para ativar/deativar)")
+            info.printinfo("Os Atalhos foram ativados (Ctrl_r para ativar/deativar)")
         
     def abrir_configs(self):
         config_window = tk.Toplevel(self.rootws)
@@ -589,8 +590,14 @@ class WS:
                 minutos_restantes = (tempo_restante % 3600) // 60
                 segundos_restantes = tempo_restante % 60
 
-                pg.sleep(pausa)
                 info.printinfo(f"Mantendo execução: {int(horas_restantes)}h {int(minutos_restantes)}m {int(segundos_restantes)}s restantes")
+                for i in range(int(pausa)//2):
+                    if myEvent.is_set():
+                        info.printinfo("Cancelando execução")
+                        return
+                    ##info.printinfo("Sleep")
+                    pg.sleep(2)
+                    ##pg.sleep(pausa)
                 # print(f'{myEvent} mantendoExecucao aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 
         except ValueError:

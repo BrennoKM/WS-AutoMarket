@@ -35,6 +35,7 @@ o programa para que os itens pre-definidos sejam vendidos automaticamente e repo
   - **'K'** - O bot será iniciado no modo simples.
   - **'O'** - O bot será iniciado no modo contínuo e ficará executando de acordo com o tempo e intervalos definidos.
 - ### Atalhos especiais
+  - **'Ctrl_r'** - Ativa/desativa os atalhos.
   - **'P'** - Coleta automaticamente o ouro na caixa de correios.
   - **'N'** - O item atual será inserido na lista de venda.
       > Ou seja, quando o bot for iniciado ele irá vender todos os itens da lista de forma que todos sejam vendidos igualmente.

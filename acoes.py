@@ -26,7 +26,12 @@ def clicar(qnt):
 
 def encontrar_alvo(path, semelhanca=0.8, regiao= None, center: bool = True, necessario: bool = True):
     if os.path.exists(path):
-        slot = pg.locateOnScreen(path, confidence=semelhanca, region=regiao)
+        try:
+            slot = pg.locateOnScreen(path, confidence=semelhanca, region=regiao)
+        except Exception as e:
+            info.printinfo(f'Except no PyAutoGui ao tentar localizar {path} na tela: {e}', True, True)
+            pg.sleep(3)
+            return None
         if(slot != None):
             if(center == True):
                 slot = pg.center(slot)
@@ -41,7 +46,12 @@ def encontrar_alvo(path, semelhanca=0.8, regiao= None, center: bool = True, nece
 
 def encontrar_alvos(path, semelhanca=0.8, regiao = None, center: bool = True, necessario: bool = True):
     if os.path.exists(path):
-        slot = pg.locateAllOnScreen(path, confidence=semelhanca, region=regiao)
+        try:
+            slot = pg.locateAllOnScreen(path, confidence=semelhanca, region=regiao)
+        except Exception as e:
+            info.printinfo(f'Except no PyAutoGui ao tentar localizar {path} na tela: {e}', True, True)
+            pg.sleep(3)
+            return None
         if(slot != None):
             # if(center == True):
             #     slot = pg.center(slot)
@@ -136,14 +146,16 @@ def avancar(myEvent):
     clicar(1)
 
 def inserir_quantidade(myEvent, qnt):
-    verif = mover_para(constantes.POSICAO_QUANTIDADE) 
-    if verif is None:
-        return None
+    
     if myEvent.is_set():
         return
-    clicar(1)
-    pg.press('backspace')
-    pg.write(qnt, 0.07 + random.uniform(-0.03, 0.04))
+    if qnt != '1':
+        verif = mover_para(constantes.POSICAO_QUANTIDADE)
+        if verif is None:
+            return None
+        clicar(1)
+        pg.press('backspace')
+        pg.write(qnt, 0.07 + random.uniform(-0.03, 0.04))
 
 def ok(myEvent):
     verif = mover_para(encontrar_alvo(f'{constantes.PATH_IMGS_ANCORAS}ancora_ok.png')) 
@@ -177,6 +189,7 @@ def vender(myEvent):
     if myEvent.is_set():
         return
     clicar(1)
+    
 
 def pegar_ouro_correio(myEvent):
     pg.sleep(0.7 + random.uniform(-0.05, 0.05))
@@ -250,6 +263,7 @@ def vender_itens(myEvent, item, qnt, preco, licensa_mkt, preco_medio):
 
     vender(myEvent)
     pg.sleep(0.5 + random.uniform(-0.05, 0.05))
+    info.printinfo(f'Item colocado no market: {item} x{qnt} por {preco}', enviar_msg=True)
     return True
 
 def contar_itens(myEvent, item):

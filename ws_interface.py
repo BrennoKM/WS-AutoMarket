@@ -7,12 +7,17 @@ import time
 import tkinter as tk
 import threading
 import pyautogui as pg
+import telegram_bot as tb
 from pynput import keyboard
 from ttkthemes import ThemedTk
 from tkinter import messagebox
 from tkinter.ttk import Label, Button, Checkbutton, Combobox, Entry, Style, Frame, Separator
 
-
+def iniciar_telegram_bot(myEvent):
+    try:
+        tb.iniciar_bot(myEvent)
+    except Exception as e:
+        info.printinfo(f"Erro ao iniciar o bot do telegram: {e}", erro=True, enviar_msg=True)
 
 class WS:
     def __init__(self):
@@ -22,6 +27,9 @@ class WS:
         myEvent = threading.Event()
         global presets
         presets = None
+
+        th_tb = threading.Thread(target=lambda: iniciar_telegram_bot(myEvent))
+        th_tb.start()
         es.inicio()
 
         self.rootws = ThemedTk(theme='arc', themebg=True)

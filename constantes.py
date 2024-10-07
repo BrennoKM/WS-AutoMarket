@@ -13,3 +13,5 @@ PATH_IMGS_ITENS = 'imgs/itens/'
 PATH_ITENS = 'itens/'
 PATH_CONSTS = 'consts/'
 PATH_LOGS = 'logs/'
+
+PATH_ENV = 'telegram.env'

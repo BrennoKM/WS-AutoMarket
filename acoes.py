@@ -7,6 +7,19 @@ import os
 pg.useImageNotFoundException(False)
 pg.FAILSAFE = False
 
+
+def capturar_e_salvar_area(x_inicial, y_inicial, largura, altura, caminho_arquivo):
+    # Capturar a área especificada
+    screenshot = pg.screenshot(region=(x_inicial, y_inicial, largura, altura))
+    
+    # Salvar a imagem
+    screenshot.save(caminho_arquivo)
+    print(f"Screenshot salva em: {caminho_arquivo}")
+
+def capturar_print():
+    screenshot = pg.screenshot()
+    return screenshot
+
 def mover_para(alvo=None, var_x=0, var_y=0):
     if(alvo is not None):
         x, y = alvo

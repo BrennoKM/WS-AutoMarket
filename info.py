@@ -38,6 +38,6 @@ def salvar_log():
     es.salvar_log(log)
     log = ''
 
-tb.verificar_variaveis_ambiente(printinfo)
+##tb.verificar_variaveis_ambiente(printinfo)
 
 

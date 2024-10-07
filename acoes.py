@@ -7,6 +7,19 @@ import os
 pg.useImageNotFoundException(False)
 pg.FAILSAFE = False
 
+
+def capturar_e_salvar_area(x_inicial, y_inicial, largura, altura, caminho_arquivo):
+    # Capturar a área especificada
+    screenshot = pg.screenshot(region=(x_inicial, y_inicial, largura, altura))
+    
+    # Salvar a imagem
+    screenshot.save(caminho_arquivo)
+    print(f"Screenshot salva em: {caminho_arquivo}")
+
+def capturar_print():
+    screenshot = pg.screenshot()
+    return screenshot
+
 def mover_para(alvo=None, var_x=0, var_y=0):
     if(alvo is not None):
         x, y = alvo
@@ -82,13 +95,20 @@ def ajustar_tela_market(myEvent):
 
 def ajustar_Barra_Lateral(myEvent):
     pg.sleep(0.2)
-    while pg.pixelMatchesColor(*constantes.POSICAO_BARRA_GRANDE_LATERAL, (57, 57, 49), tolerance=10):
-        #print(f"{myEvent}  interface AJUSTARBARRA actions")
-        if myEvent.is_set():
-            return
+    ## tratar erro aqui também
+    try:
+        while pg.pixelMatchesColor(*constantes.POSICAO_BARRA_GRANDE_LATERAL, (57, 57, 49), tolerance=10):
+            #print(f"{myEvent}  interface AJUSTARBARRA actions")
+            if myEvent.is_set():
+                return
+            mover_para(constantes.POSICAO_BARRA_GRANDE_LATERAL)
+            clicar(1)
+    except Exception as e:
+        info.printinfo(f'Except no PyAutoGui ao tentar ler a cor do pixel na barra lateral: {e}', True)
         mover_para(constantes.POSICAO_BARRA_GRANDE_LATERAL)
         clicar(1)
-    
+        return None
+        
 
 def encontrar_slot_vazio(myEvent):
     verif = mover_para(encontrar_alvo(f'{constantes.PATH_IMGS_ANCORAS}ancora_slot_mkt.png', regiao=constantes.AREA_MERCADO)) 
@@ -263,7 +283,10 @@ def vender_itens(myEvent, item, qnt, preco, licensa_mkt, preco_medio):
 
     vender(myEvent)
     pg.sleep(0.5 + random.uniform(-0.05, 0.05))
-    info.printinfo(f'Item colocado no market: {item} x{qnt} por {preco}', enviar_msg=True)
+    if preco_medio is False:
+        info.printinfo(f'Item colocado no market: {item} x{qnt} por {preco}', enviar_msg=True)
+    else:
+        info.printinfo(f'Item colocado no market: {item} x{qnt} pelo preço médio', enviar_msg=True)
     return True
 
 def contar_itens(myEvent, item):

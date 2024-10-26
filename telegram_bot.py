@@ -45,7 +45,7 @@ def verificar_variaveis_ambiente(printinfo_callback=print):
 
 session = requests.Session()
 
-def send_telegram_message(message, printinfo_callback=print):
+def send_telegram_message(message, printinfo_callback=print, parse_mode=None):
     global TOKEN, CHAT_IDS
     if not TOKEN or not CHAT_IDS:
         # if printinfo_callback:
@@ -53,23 +53,35 @@ def send_telegram_message(message, printinfo_callback=print):
         return
     # Inicia uma thread para cada chat_id
     for chat_id in CHAT_IDS:
-        thread = threading.Thread(target=send_message, args=(chat_id, message, printinfo_callback))
+        thread = threading.Thread(target=send_message, args=(chat_id, message, printinfo_callback, parse_mode))
         thread.start()
 
-def send_message(chat_id, message, printinfo_callback=print):
-        urlmsg = f"https://api.telegram.org/bot{TOKEN}/sendMessage?chat_id={chat_id}&text={message}"
-        try:
-            response = session.get(urlmsg, timeout=60)  # Adiciona timeout de 60 segundos
-            response.raise_for_status()  # Levanta exceção para códigos de status HTTP de erro
-        except requests.exceptions.ConnectionError:
-            if printinfo_callback:
-                printinfo_callback(f"Erro de conexão ao enviar mensagem para chat_id {chat_id}.", True)
-            return None  # Retorna None sem tentar novamente
-        except requests.exceptions.RequestException as e:
-            if printinfo_callback:
-                printinfo_callback(f"Erro na request para chat_id {chat_id}", True, True)
-            return None  # Retorna None para outros erros
-        return response.json()
+def send_message(chat_id, message, printinfo_callback=print, parse_mode=None):
+    urlmsg = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    headers = {
+        "Content-Type": "application/json"
+    }
+    data = {
+        "chat_id": chat_id,
+        "text": message,
+    }
+    if (parse_mode is not None):
+        data["parse_mode"] = parse_mode
+        
+    
+    try:
+        response = requests.post(urlmsg, headers=headers, json=data, timeout=60)  # Adiciona timeout de 60 segundos
+        response.raise_for_status()  # Levanta exceção para códigos de status HTTP de erro
+    except requests.exceptions.ConnectionError:
+        if printinfo_callback:
+            printinfo_callback(f"Erro de conexão ao enviar mensagem para chat_id {chat_id}.", True)
+        return None  # Retorna None sem tentar novamente
+    except requests.exceptions.RequestException as e:
+        if printinfo_callback:
+            printinfo_callback(f"Erro na request para chat_id {chat_id}", True, True)
+            # printinfo_callback(f"Erro na request para chat_id {chat_id}: {e}", True, True)
+        return None  # Retorna None para outros erros
+    return response.json()
 
 def send_image(chat_id, image_path, printinfo_callback):
     url = f"https://api.telegram.org/bot{TOKEN}/sendPhoto"

@@ -419,7 +419,7 @@ class WS:
                     self.resetar_preset()
                     pass
                 if key.char == 'v':
-                    acoes.contar_itens(myEvent, 'bau_prima.png')
+                    self.salvar_itens()
                     pass
                 if key.char is not None:
                     pass
@@ -482,15 +482,27 @@ class WS:
         global presets
         if presets is not None:
             presets = presets + [self.carregar_preset(rep=False)]
-            info.printinfo(presets)
         else:
             presets = [self.carregar_preset(rep=False)]
-            info.printinfo(presets)
+
+        formatted_presets = self.format_presets(presets)
+        info.printinfo(formatted_presets)
+
+    def format_presets(self, presets):
+        formatted_presets = []
+        for preset in presets:
+            if isinstance(preset, tuple):
+                formatted_preset = '[' + ', '.join(f"'{element}'" if isinstance(element, str) else str(element) for element in preset[1:]) + ']'
+            else:
+                formatted_preset = str(preset)
+            formatted_presets.append(formatted_preset)
+        return '\n' + '\n'.join(formatted_presets)
 
     def resetar_preset(self):
         global presets
         presets = [self.carregar_preset(rep=False)]
-        info.printinfo(presets)
+        formatted_presets = self.format_presets(presets)
+        info.printinfo(formatted_presets)
 
     def runBot(self, myEvent, item, qnt, preco, repeticoes, licenca_mkt=False, preco_medio=False):
         global presets
@@ -628,7 +640,10 @@ class WS:
         if indice_elemento is not None:
             elemento_movido = dados.pop(indice_elemento)
             dados.insert(0, elemento_movido)
-        es.salvar_itens_novos(dados)   
+        es.salvar_itens_novos(dados)
+        self.atualizar_cbx_values()
+        self.atualizar_cbx(None)
+        info.printinfo("Itens salvos") 
     
     def encerrar(self):
         self.salvar_itens()

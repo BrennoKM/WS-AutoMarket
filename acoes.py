@@ -184,6 +184,7 @@ def ok(myEvent):
     if myEvent.is_set():
         return
     clicar(1)
+    return True
 
 def inserir_preco(myEvent, preco):
     verif = mover_para(constantes.POSICAO_PRECO) 
@@ -263,7 +264,7 @@ def vender_itens(myEvent, item, qnt, preco, licensa_mkt, preco_medio):
     if myEvent.is_set():
         return
 
-    ok(myEvent)
+    vendeu = ok(myEvent)
     
     if myEvent.is_set():
         return
@@ -283,10 +284,11 @@ def vender_itens(myEvent, item, qnt, preco, licensa_mkt, preco_medio):
 
     vender(myEvent)
     pg.sleep(0.5 + random.uniform(-0.05, 0.05))
-    if preco_medio is False:
-        info.printinfo(f'Item colocado no market: {item} x{qnt} por {preco}', enviar_msg=True)
-    else:
-        info.printinfo(f'Item colocado no market: {item} x{qnt} pelo preço médio', enviar_msg=True)
+    if vendeu is True:
+        if preco_medio is False:
+            info.printinfo(f'Item colocado no market: {item} x{qnt} por {preco}', enviar_msg=True)
+        else:
+            info.printinfo(f'Item colocado no market: {item} x{qnt} pelo preço médio', enviar_msg=True)
     return True
 
 def contar_itens(myEvent, item):

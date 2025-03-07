@@ -523,6 +523,7 @@ class WS:
                         menor_qnt = qnt
                         item_faltando = p
                 self.rodar(myEvent, 1, item_faltando)
+                
         else:
             preset = (myEvent, item, qnt, preco, licenca_mkt, preco_medio)
             presets = [preset]
